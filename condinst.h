@@ -12,6 +12,13 @@
 unsigned short then_cnt;
 unsigned short else_cnt;
 
+/* Conditional Reset Macro */
+#define COND_RESET  {\
+                    srptr->COND = CLEAR;\
+                    then_cnt = 0;\
+                    else_cnt = 0;\
+                    }
+
 /* Function Declarations */
 void ifeq(void);
 void ifne(void);

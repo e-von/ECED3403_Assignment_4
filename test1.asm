@@ -1,4 +1,4 @@
-; Rule #1 Test, True Condition, Existing Then Instructions
+; Test #1 - Rule #1 True Condition, Existing Then and Else Instructions
 
 org 0x1000
   alpha word  0x1234

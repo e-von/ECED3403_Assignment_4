@@ -27,9 +27,7 @@ void jne_jnz(unsigned short offset){
   }
   if(!(check_SR(Z))){
     INC_PC(offset10to16(offset));
-    srptr->COND = CLEAR;
-    then_cnt = 0;
-    else_cnt = 0;
+    COND_RESET;
   }
 }
 
@@ -39,9 +37,7 @@ void jeq_jz(unsigned short offset){
   }
   if(check_SR(Z)){
     INC_PC(offset10to16(offset));
-    srptr->COND = CLEAR;
-    then_cnt = 0;
-    else_cnt = 0;
+    COND_RESET;
   }
 }
 
@@ -51,9 +47,7 @@ void jnc_jlo(unsigned short offset){
   }
   if(!(check_SR(C))){
     INC_PC(offset10to16(offset));
-    srptr->COND = CLEAR;
-    then_cnt = 0;
-    else_cnt = 0;
+    COND_RESET;
   }
 }
 
@@ -63,9 +57,7 @@ void jc_jhs(unsigned short offset){
   }
   if(check_SR(C)){
     INC_PC(offset10to16(offset));
-    srptr->COND = CLEAR;
-    then_cnt = 0;
-    else_cnt = 0;
+    COND_RESET;
   }
 }
 
@@ -75,9 +67,7 @@ void j_n(unsigned short offset){         //named like this due to C function jn
   }
   if(check_SR(N)){
     INC_PC(offset10to16(offset));
-    srptr->COND = CLEAR;
-    then_cnt = 0;
-    else_cnt = 0;
+    COND_RESET;
   }
 }
 
@@ -87,9 +77,7 @@ void jge(unsigned short offset){
   }
   if(!(check_SR(N) ^ check_SR(V))){
     INC_PC(offset10to16(offset));
-    srptr->COND = CLEAR;
-    then_cnt = 0;
-    else_cnt = 0;
+    COND_RESET;
   }
 }
 
@@ -99,9 +87,7 @@ void jl(unsigned short offset){
   }
   if(check_SR(N) ^ check_SR(V)){
     INC_PC(offset10to16(offset));
-    srptr->COND = CLEAR;
-    then_cnt = 0;
-    else_cnt = 0;
+    COND_RESET;
   }
 }
 
@@ -110,9 +96,7 @@ void jmp(unsigned short offset){
     printf("jmp with half offset %x\n", offset);
   }
   INC_PC(offset10to16(offset));
-  srptr->COND = CLEAR;
-  then_cnt = 0;
-  else_cnt = 0;
+  COND_RESET;
 }
 
 signed short offset10to16(unsigned short off10){

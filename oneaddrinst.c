@@ -123,9 +123,7 @@ void push(unsigned short bw, unsigned short as, unsigned short reg){
 void call(unsigned short bw, unsigned short as, unsigned short reg){
   uint16_t operand, address;
 
-  srptr->COND = CLEAR;                                  //break the conditional
-  then_cnt = 0;
-  else_cnt = 0;
+  COND_RESET;                                             //Reset the Conditions
 
   operand = get_operand(as, reg, WORD, TRUE, &address);   //dst->tmp
   reg_file[SP] -= WORDINC;                                //SP-2->SP

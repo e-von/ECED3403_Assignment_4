@@ -1,70 +1,57 @@
 
 --------------    Input Records    --------------
 
-------Record 1------: ; Test #5 - Two conditionals in a row, the first of which has no counters set
+------Record 1------: ; Test #3 Cancellation of conditional through call
 
-------Record 2------: ; so all the conditionals are executed regardless. The second set its own COND
+------Record 2------: 
 
-------Record 3------: ; and EX bits
+------Record 3------: org 0x1000
 
-------Record 4------: 
+------Record 4------:   alpha byte  0x32          ;1000
 
-------Record 5------: org 0x1000
+------Record 5------:   beta  byte  0x34          ;1001
 
-------Record 6------:   alpha word  0x0001        ;1000
+------Record 6------: 
 
-------Record 7------:   beta  word  0x7FFF        ;1002
+------Record 7------: org 0x2000
 
-------Record 8------: 
+------Record 8------:   main
 
-------Record 9------: org 0x2000
+------Record 9------:     cmp.b &alpha, &beta     ;2000, 2002, 2004
 
-------Record 10------:   main
+------Record 10------:     ifal  word    0x1FED    ;2006, IFAL inst with 3 TC and 1 FC
 
-------Record 11------:     add   &alpha, &beta     ;Sets the Carry bit, Z, N, V clear
+------Record 11------: ;If equal
 
-------Record 12------:     ifvs  word    0x1FC0    ;IFVS inst with 0 TC and 0 FC
+------Record 12------:     mov   #2, &alpha        ;2008, 200A
 
-------Record 13------: ;If V set
+------Record 13------:     call  #subroutine
 
-------Record 14------:     sub   &alpha, &beta     ;Since there is no counter all instructions are
+------Record 14------:     sxt   &beta
 
-------Record 15------:     rra   beta              ;executed
+------Record 15------: ;Else
 
-------Record 16------: ;Else
+------Record 16------:     add   #1, &alpha
 
-------Record 17------:     mov #0, R3              ;Executed as well
+------Record 17------: 
 
-------Record 18------: 
+------Record 18------: org 0x2100
 
-------Record 19------:     cmp   &alpha, &beta
+------Record 19------:   subroutine
 
-------Record 20------:     ifpl  word  0x1F55
+------Record 20------:     xor &alpha, &beta
 
-------Record 21------: ;If unsigned higher
+------Record 21------:     mov @SP+, PC
 
-------Record 22------:     jmp   exit
+------Record 22------: 
 
-------Record 23------: ;Else
-
-------Record 24------:     mov #0, R3
-
-------Record 25------: 
-
-------Record 26------: org 0x2100
-
-------Record 27------:   exit
-
-------Record 28------: 
-
-------Record 29------: end 0x2000
+------Record 23------: end 0x2000
 
 --------------    Symbol Table    --------------
-Name: exit		Value: 8448		Type: Label
-Name: ifpl		Value: 8218		Type: Label
-Name: ifvs		Value: 8198		Type: Label
+Name: subroutine		Value: 8448		Type: Label
+Name: ifal		Value: 8198		Type: Label
 Name: main		Value: 8192		Type: Label
-Name: beta		Value: 4098		Type: Label
+Name: beta		Value: 4097		Type: Label
 Name: alpha		Value: 4096		Type: Label
 Name: R15		Value: 15		Type: Register
 Name: R14		Value: 14		Type: Register
@@ -91,47 +78,45 @@ Notes: This file contains the record number and corresponding opcode. The opcode
 is categorized into instruction opcode, and source and destination operand values.
 A value of 0000 means non-existing value
 
-----------RECORD: 5----------
+----------RECORD: 3----------
 
-----------RECORD: 6----------
+----------RECORD: 4----------
+
+----------RECORD: 5----------
 
 ----------RECORD: 7----------
 
 ----------RECORD: 9----------
-
-----------RECORD: 11----------
-Instruction Opcode: 5292
+Instruction Opcode: 92d2
 Source Value: 1000
-Destination Value: 1002
+Destination Value: 1001
+
+----------RECORD: 10----------
 
 ----------RECORD: 12----------
-
-----------RECORD: 14----------
-Instruction Opcode: 8292
-Source Value: 1000
-Destination Value: 1002
-
-----------RECORD: 15----------
-Instruction Opcode: 1110
-Source Value: ffffeff0
-----------RECORD: 17----------
-Instruction Opcode: 4303
+Instruction Opcode: 43a2
 Source Value: 0000
-Destination Value: 0000
+Destination Value: 1000
 
-----------RECORD: 19----------
-Instruction Opcode: 9292
-Source Value: 1000
-Destination Value: 1002
+----------RECORD: 13----------
+Instruction Opcode: 12b0
+Source Value: 2100
+----------RECORD: 14----------
+Instruction Opcode: 1192
+Source Value: 1001
+----------RECORD: 16----------
+Instruction Opcode: 5392
+Source Value: 0000
+Destination Value: 1000
+
+----------RECORD: 18----------
 
 ----------RECORD: 20----------
+Instruction Opcode: e292
+Source Value: 1000
+Destination Value: 1001
 
-----------RECORD: 22----------
-Instruction Opcode: 3c71
-
-----------RECORD: 24----------
-Instruction Opcode: 4303
+----------RECORD: 21----------
+Instruction Opcode: 4130
 Source Value: 0000
 Destination Value: 0000
-
-----------RECORD: 26----------

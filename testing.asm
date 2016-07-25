@@ -8,13 +8,16 @@ org 0x2000
     ifgt  word    0x1FCF    ;2006
 ;If equal
     mov   #0, &alpha        ;2008, 200A
-    mov   #1, &beta         ;200C, 200E
-    sxt   beta
+    jmp   sbr               ;200C
+    sxt   beta              ;200E
 ;Else
     mov   &beta, &alpha     ;2010, 2012, 2014
     add   #1, &alpha        ;2016, 2018
     mov   #0, &beta         ;201A, 201C
 
-end 0x2000
+org 0x2100
+  sbr
+    xor alpha, beta
+    jmp $200E
 
-cmp   &alpha, &beta
+end 0x2000
