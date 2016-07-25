@@ -1,0 +1,111 @@
+
+--------------    Input Records    --------------
+
+------Record 1------: org 0x1000
+
+------Record 2------:   alpha word  0x1234
+
+------Record 3------:   beta  word  0x1234
+
+------Record 4------: 
+
+------Record 5------: org 0x2000
+
+------Record 6------:   main
+
+------Record 7------:     cmp   &alpha, &beta     ;2000, 2002, 2004
+
+------Record 8------:     ifeq  word  0x1f0f      ;2006
+
+------Record 9------: ;   If equal
+
+------Record 10------:     mov   #0, &alpha        ;2008, 200A
+
+------Record 11------:     mov   #1, &beta         ;200C, 200E
+
+------Record 12------:     sxt   beta
+
+------Record 13------: ;   Else
+
+------Record 14------:     mov   &beta, &alpha     ;2010, 2012, 2014
+
+------Record 15------:     add   #1, &alpha        ;2016, 2018
+
+------Record 16------:     mov   #0, &beta         ;201A, 201C
+
+------Record 17------: 
+
+------Record 18------: end 0x2000
+
+--------------    Symbol Table    --------------
+Name: ifeq		Value: 8198		Type: Label
+Name: main		Value: 8192		Type: Label
+Name: beta		Value: 4098		Type: Label
+Name: alpha		Value: 4096		Type: Label
+Name: R15		Value: 15		Type: Register
+Name: R14		Value: 14		Type: Register
+Name: R13		Value: 13		Type: Register
+Name: R12		Value: 12		Type: Register
+Name: R11		Value: 11		Type: Register
+Name: R10		Value: 10		Type: Register
+Name: R9		Value: 9		Type: Register
+Name: R8		Value: 8		Type: Register
+Name: R7		Value: 7		Type: Register
+Name: R6		Value: 6		Type: Register
+Name: R5		Value: 5		Type: Register
+Name: R4		Value: 4		Type: Register
+Name: R3		Value: 3		Type: Register
+Name: SR		Value: 2		Type: Register
+Name: R2		Value: 2		Type: Register
+Name: SP		Value: 1		Type: Register
+Name: R1		Value: 1		Type: Register
+Name: PC		Value: 0		Type: Register
+Name: R0		Value: 0		Type: Register
+
+--------------Second Pass Diagnostic Opcode--------------
+Notes: This file contains the record number and corresponding opcode. The opcode
+is categorized into instruction opcode, and source and destination operand values.
+A value of 0000 means non-existing value
+
+----------RECORD: 1----------
+
+----------RECORD: 2----------
+
+----------RECORD: 3----------
+
+----------RECORD: 5----------
+
+----------RECORD: 7----------
+Instruction Opcode: 9292
+Source Value: 1000
+Destination Value: 1002
+
+----------RECORD: 8----------
+
+----------RECORD: 10----------
+Instruction Opcode: 4382
+Source Value: 0000
+Destination Value: 1000
+
+----------RECORD: 11----------
+Instruction Opcode: 4392
+Source Value: 0000
+Destination Value: 1002
+
+----------RECORD: 12----------
+Instruction Opcode: 1190
+Source Value: ffffefee
+----------RECORD: 14----------
+Instruction Opcode: 4292
+Source Value: 1002
+Destination Value: 1000
+
+----------RECORD: 15----------
+Instruction Opcode: 5392
+Source Value: 0000
+Destination Value: 1000
+
+----------RECORD: 16----------
+Instruction Opcode: 4382
+Source Value: 0000
+Destination Value: 1002
