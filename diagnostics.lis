@@ -1,44 +1,68 @@
 
 --------------    Input Records    --------------
 
-------Record 1------: org 0x1000
+------Record 1------: ; Test #5 - Two conditionals in a row, the first of which has no counters set
 
-------Record 2------:   alpha word  0x1234
+------Record 2------: ; so all the conditionals are executed regardless. The second set its own COND
 
-------Record 3------:   beta  word  0x1234
+------Record 3------: ; and EX bits
 
 ------Record 4------: 
 
-------Record 5------: org 0x2000
+------Record 5------: org 0x1000
 
-------Record 6------:   main
+------Record 6------:   alpha word  0x0001        ;1000
 
-------Record 7------:     cmp   &alpha, &beta     ;2000, 2002, 2004
+------Record 7------:   beta  word  0x7FFF        ;1002
 
-------Record 8------:     ifeq  word  0x1f0f      ;2006
+------Record 8------: 
 
-------Record 9------: ;   If equal
+------Record 9------: org 0x2000
 
-------Record 10------:     mov   #0, &alpha        ;2008, 200A
+------Record 10------:   main
 
-------Record 11------:     mov   #1, &beta         ;200C, 200E
+------Record 11------:     add   &alpha, &beta     ;Sets the Carry bit, Z, N, V clear
 
-------Record 12------:     sxt   beta
+------Record 12------:     ifvs  word    0x1FC0    ;IFVS inst with 0 TC and 0 FC
 
-------Record 13------: ;   Else
+------Record 13------: ;If V set
 
-------Record 14------:     mov   &beta, &alpha     ;2010, 2012, 2014
+------Record 14------:     sub   &alpha, &beta     ;Since there is no counter all instructions are
 
-------Record 15------:     add   #1, &alpha        ;2016, 2018
+------Record 15------:     rra   beta              ;executed
 
-------Record 16------:     mov   #0, &beta         ;201A, 201C
+------Record 16------: ;Else
 
-------Record 17------: 
+------Record 17------:     mov #0, R3              ;Executed as well
 
-------Record 18------: end 0x2000
+------Record 18------: 
+
+------Record 19------:     cmp   &alpha, &beta
+
+------Record 20------:     ifpl  word  0x1F55
+
+------Record 21------: ;If unsigned higher
+
+------Record 22------:     jmp   exit
+
+------Record 23------: ;Else
+
+------Record 24------:     mov #0, R3
+
+------Record 25------: 
+
+------Record 26------: org 0x2100
+
+------Record 27------:   exit
+
+------Record 28------: 
+
+------Record 29------: end 0x2000
 
 --------------    Symbol Table    --------------
-Name: ifeq		Value: 8198		Type: Label
+Name: exit		Value: 8448		Type: Label
+Name: ifpl		Value: 8218		Type: Label
+Name: ifvs		Value: 8198		Type: Label
 Name: main		Value: 8192		Type: Label
 Name: beta		Value: 4098		Type: Label
 Name: alpha		Value: 4096		Type: Label
@@ -67,45 +91,47 @@ Notes: This file contains the record number and corresponding opcode. The opcode
 is categorized into instruction opcode, and source and destination operand values.
 A value of 0000 means non-existing value
 
-----------RECORD: 1----------
-
-----------RECORD: 2----------
-
-----------RECORD: 3----------
-
 ----------RECORD: 5----------
 
+----------RECORD: 6----------
+
 ----------RECORD: 7----------
+
+----------RECORD: 9----------
+
+----------RECORD: 11----------
+Instruction Opcode: 5292
+Source Value: 1000
+Destination Value: 1002
+
+----------RECORD: 12----------
+
+----------RECORD: 14----------
+Instruction Opcode: 8292
+Source Value: 1000
+Destination Value: 1002
+
+----------RECORD: 15----------
+Instruction Opcode: 1110
+Source Value: ffffeff0
+----------RECORD: 17----------
+Instruction Opcode: 4303
+Source Value: 0000
+Destination Value: 0000
+
+----------RECORD: 19----------
 Instruction Opcode: 9292
 Source Value: 1000
 Destination Value: 1002
 
-----------RECORD: 8----------
+----------RECORD: 20----------
 
-----------RECORD: 10----------
-Instruction Opcode: 4382
+----------RECORD: 22----------
+Instruction Opcode: 3c71
+
+----------RECORD: 24----------
+Instruction Opcode: 4303
 Source Value: 0000
-Destination Value: 1000
+Destination Value: 0000
 
-----------RECORD: 11----------
-Instruction Opcode: 4392
-Source Value: 0000
-Destination Value: 1002
-
-----------RECORD: 12----------
-Instruction Opcode: 1190
-Source Value: ffffefee
-----------RECORD: 14----------
-Instruction Opcode: 4292
-Source Value: 1002
-Destination Value: 1000
-
-----------RECORD: 15----------
-Instruction Opcode: 5392
-Source Value: 0000
-Destination Value: 1000
-
-----------RECORD: 16----------
-Instruction Opcode: 4382
-Source Value: 0000
-Destination Value: 1002
+----------RECORD: 26----------

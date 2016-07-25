@@ -35,7 +35,7 @@ void ifeq(void){
   srptr->COND = srptr->Z;
 }
 
-//Condition met if Z clear
+//Condition met if Z clear, tested working
 void ifne(void){
   printf("IFNE\n");
   srptr->COND = !(srptr->Z);
@@ -77,7 +77,7 @@ void ifvc(void){
   srptr->COND = !(srptr->V);
 }
 
-//Condition met if C set and Z clear
+//Condition met if C set and Z clear, tested working
 void ifhi(void){
   printf("IFHI\n");
   srptr->COND = ((srptr->C) && !(srptr->Z)) ? SET : CLEAR;
@@ -95,6 +95,9 @@ void ifge(void){
   if(((srptr->N) && (srptr->V)) || (!(srptr->N) && !(srptr->Z))){
     srptr->COND = SET;
   }
+  else{
+    srptr->COND = CLEAR;
+  }
 }
 
 //Condition met if N set and V clear or N clear and V set
@@ -102,6 +105,9 @@ void iflt(void){
   printf("IFLT\n");
   if(((srptr->N) && !(srptr->V)) || (!(srptr->N) && (srptr->V))){
     srptr->COND = SET;
+  }
+  else{
+    srptr->COND = CLEAR;
   }
 }
 
@@ -111,6 +117,9 @@ void ifgt(void){
   if(!(srptr->Z)&&(((srptr->N)&&(srptr->V))||((!(srptr->N))&&(!(srptr->V))))){
     srptr->COND = SET;
   }
+  else{
+    srptr->COND = CLEAR;
+  }
 }
 
 //Condition met if Z set or N set and V clear or N clear and V set
@@ -118,6 +127,9 @@ void ifle(void){
   printf("IFLE\n");
   if(((srptr->Z) || (srptr->N)) && (!(srptr->V) || (srptr->N)) && srptr->V){
     srptr->COND = SET;
+  }
+  else{
+    srptr->COND = CLEAR;
   }
 }
 
@@ -138,6 +150,7 @@ void decisiontable(void){
   if((then_cnt == 0) && (else_cnt == 0)){
     printf("Rule 5 applied\n");
     srptr->EX = SET;
+    srptr->COND = CLEAR;            //Reset Condition bit to allow SR changes
   }
   else{
     //Rules 1 and 2

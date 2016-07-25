@@ -12,6 +12,7 @@
 #include "jumpinst.h"
 #include "srcontrol.h"
 #include "debugger.h"     //Included for trace flag
+#include "condinst.h"    //Included for counter reset
 
 enum srbits {C, Z, N, V};
 
@@ -24,49 +25,84 @@ void jne_jnz(unsigned short offset){
   if(trace){
     printf("jne_jnz with half offset %x\n", offset);
   }
-  check_SR(Z) ?: INC_PC(offset10to16(offset));
+  if(!(check_SR(Z))){
+    INC_PC(offset10to16(offset));
+    srptr->COND = CLEAR;
+    then_cnt = 0;
+    else_cnt = 0;
+  }
 }
 
 void jeq_jz(unsigned short offset){
   if(trace){
     printf("jeq_jz with half offset %x\n", offset);
   }
-  check_SR(Z) ? INC_PC(offset10to16(offset)) : 0;
+  if(check_SR(Z)){
+    INC_PC(offset10to16(offset));
+    srptr->COND = CLEAR;
+    then_cnt = 0;
+    else_cnt = 0;
+  }
 }
 
 void jnc_jlo(unsigned short offset){
   if(trace){
     printf("jnc_jlo with half offset %x\n", offset);
   }
-  check_SR(C) ?: INC_PC(offset10to16(offset));
+  if(!(check_SR(C))){
+    INC_PC(offset10to16(offset));
+    srptr->COND = CLEAR;
+    then_cnt = 0;
+    else_cnt = 0;
+  }
 }
 
 void jc_jhs(unsigned short offset){
   if(trace){
     printf("jc_jhs with half offset %x\n", offset);
   }
-  check_SR(C) ? INC_PC(offset10to16(offset)) : 0;
+  if(check_SR(C)){
+    INC_PC(offset10to16(offset));
+    srptr->COND = CLEAR;
+    then_cnt = 0;
+    else_cnt = 0;
+  }
 }
 
 void j_n(unsigned short offset){         //named like this due to C function jn
   if(trace){
     printf("jn with half offset %x\n", offset);
   }
-  check_SR(N) ? INC_PC(offset10to16(offset)) : 0;
+  if(check_SR(N)){
+    INC_PC(offset10to16(offset));
+    srptr->COND = CLEAR;
+    then_cnt = 0;
+    else_cnt = 0;
+  }
 }
 
 void jge(unsigned short offset){
   if(trace){
     printf("jge with half offset %x\n", offset);
   }
-  (check_SR(N) ^ check_SR(V)) ?: INC_PC(offset10to16(offset));
+  if(!(check_SR(N) ^ check_SR(V))){
+    INC_PC(offset10to16(offset));
+    srptr->COND = CLEAR;
+    then_cnt = 0;
+    else_cnt = 0;
+  }
 }
 
 void jl(unsigned short offset){
   if(trace){
     printf("jl with half offset %x\n", offset);
   }
-  (check_SR(N) ^ check_SR(V)) ? INC_PC(offset10to16(offset)) : 0;
+  if(check_SR(N) ^ check_SR(V)){
+    INC_PC(offset10to16(offset));
+    srptr->COND = CLEAR;
+    then_cnt = 0;
+    else_cnt = 0;
+  }
 }
 
 void jmp(unsigned short offset){
@@ -74,6 +110,9 @@ void jmp(unsigned short offset){
     printf("jmp with half offset %x\n", offset);
   }
   INC_PC(offset10to16(offset));
+  srptr->COND = CLEAR;
+  then_cnt = 0;
+  else_cnt = 0;
 }
 
 signed short offset10to16(unsigned short off10){

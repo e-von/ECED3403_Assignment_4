@@ -68,7 +68,7 @@ unsigned char check_SR(enum srbits );
 unsigned char check_value_carry(unsigned int, unsigned char);
 unsigned char check_value_negative(unsigned short, unsigned char);
 unsigned char check_value_zero(unsigned short, unsigned char);
-unsigned char update_sr(unsigned short, unsigned int, unsigned char,
+void update_sr(unsigned short, unsigned int, unsigned char,
   unsigned short);
 void arithm_op_sr(unsigned short, unsigned int, unsigned char, unsigned short,
   unsigned short, unsigned char, unsigned short);

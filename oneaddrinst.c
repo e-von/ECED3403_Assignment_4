@@ -16,6 +16,7 @@
 #include "addrmodes.h"
 #include "srcontrol.h"
 #include "debugger.h"
+#include "condinst.h"
 
 //tested, working
 void rrc(unsigned short bw, unsigned short as, unsigned short reg){
@@ -23,7 +24,11 @@ void rrc(unsigned short bw, unsigned short as, unsigned short reg){
 
   operand = get_operand(as, reg, bw, FALSE, &dummy_val);  //Get operand
   c = srptr->C;                                           //Load C for new MSB
-  srptr->C = LSB(operand);                                //New C is old LSB
+
+  if(!(srptr->COND)){
+    srptr->C = LSB(operand);                                //New C is old LSB
+  }
+
   switch (bw) {
     case BYTE:
     operand = RSHIFT(LOWBYTE(operand)) | PLACEBIT(c, MSBBYTE);
@@ -56,7 +61,11 @@ void rra(unsigned short bw, unsigned short as, unsigned short reg){
   unsigned short operand, temp, dummy_val;
 
   operand = get_operand(as, reg, bw, FALSE, &dummy_val);
-  srptr->C = LSB(operand);                          //Loading C bit from LSB
+
+  if(!(srptr->COND)){
+    srptr->C = LSB(operand);                          //Loading C bit from LSB
+  }
+
   switch (bw) {
     case BYTE:
     temp = MSB_B(operand);                          //Get MSB to retain it
@@ -89,7 +98,10 @@ void sxt(unsigned short bw, unsigned short as, unsigned short reg){
 
   put_operand(as, reg, operand, bw);    //Place the new operand
   update_sr(operand, 0, bw, ZNV);       //Update Zero, Negative, Overflow
-  srptr->Z ? CLEAR_C : SET_C;           //Special Carry Case
+
+  if(!(srptr->COND)){
+    srptr->Z ? CLEAR_C : SET_C;           //Special Carry Case
+  }
 
   if(trace){
     oa_dbg_printer("SXT", bw, as, reg, operand);
@@ -110,6 +122,10 @@ void push(unsigned short bw, unsigned short as, unsigned short reg){
 //tested, working
 void call(unsigned short bw, unsigned short as, unsigned short reg){
   uint16_t operand, address;
+
+  srptr->COND = CLEAR;                                  //break the conditional
+  then_cnt = 0;
+  else_cnt = 0;
 
   operand = get_operand(as, reg, WORD, TRUE, &address);   //dst->tmp
   reg_file[SP] -= WORDINC;                                //SP-2->SP

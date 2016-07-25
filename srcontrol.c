@@ -18,11 +18,17 @@ enum srbits {CARRY, ZERO, NEGATIVE, OVERFLOW};
 
 //The main way to update the status register, it uses other smaller functions
 //to determine if a bit should be set or cleared.
-unsigned char update_sr(unsigned short val, unsigned int intval,
+void update_sr(unsigned short val, unsigned int intval,
   unsigned char bw, unsigned short bits){
   #ifdef debug
   printf("Checking values val: %d intval: %u for bw: %d\n", val, intval, bw);
   #endif
+
+  if(srptr->COND){
+    printf("Altering the SR is forbidden in conditional instructions.\n");
+    return;
+  }
+
   if(mask_carry(bits)){
     check_value_carry(intval, bw) ? SET_C : CLEAR_C;
   }
@@ -44,9 +50,14 @@ void arithm_op_sr(unsigned short value, unsigned int intval, unsigned char bw,
   unsigned char src_sign, dst_sign;
 
   #ifdef debug
-  printf("Initial SR values: C:%d Z:%d N:%d V:%d\n",
-  srptr->C, srptr->Z, srptr->N, srptr->V);
+  printf("Initial SR values: C:%d Z:%d N:%d V:%d EX:%d COND:%d\n",
+  srptr->C, srptr->Z, srptr->N, srptr->V, srptr->EX, srptr->COND);
   #endif
+
+  if(srptr->COND){
+    printf("Altering the SR is forbidden in conditional instructions.\n");
+    return;
+  }
 
   update_sr(value, intval, bw, bits);    //Updates carry, zero and negative bits
   src_sign = check_value_negative(src, bw);   //Used unnecessarily for DADD

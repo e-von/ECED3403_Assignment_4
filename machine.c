@@ -69,10 +69,10 @@ void run_machine(void){
     switch (OPCODE_TYPE(inst_reg)) {        //Sorts masked instructions
       case ONEOP:
       if(COND_CHK(inst_reg)){
-        then_cnt = COND_TC(inst_reg);
+        then_cnt = COND_TC(inst_reg);       //Extract Then Else counters
         else_cnt = COND_FC(inst_reg);
         printf("Εντωπίστηκε Conditional Instruction.\n");
-        printf("Then μέτρηση:%d else μέτρηση:%d\n", then_cnt, else_cnt);
+        printf("Thens:%d Elses:%d\n", then_cnt, else_cnt);
         cond_ptr[COND_MASK(inst_reg)]();
       }
       else{
@@ -107,12 +107,11 @@ void run_machine(void){
 
     if(trace){                          //If trace was set at debug setup
       printf("Instruction Executed.\n"
-      "sys_clk: %ld PC: %04x SR: %04x SP: %04x EX: %d\n",
-      sys_clk, reg_file[PC], reg_file[SR], reg_file[SP], srptr->EX);
+      "sys_clk: %ld PC: %04x SR: %04x SP: %04x EX: %d COND: %d\n",
+      sys_clk, reg_file[PC], reg_file[SR], reg_file[SP], srptr->EX, srptr->COND);
       cache_print();
       breakpoint_hdlr();                //Call the handler for debug options
     }
-
     check_for_status_change();          //Check for interrupts, after inst
   }
   printf("\nInstructions complete. Total CPU cycles: %ld\n", sys_clk);

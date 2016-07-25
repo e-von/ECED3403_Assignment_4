@@ -129,14 +129,17 @@ void bit(unsigned short sreg, unsigned short ad, unsigned short bw,
 
   retrieve_operands(&src, &dst, bw, sreg, ad, as, dreg, TRUE, TRUE);
   res = AND(src, dst);
-  check_value_negative(res, bw) ? SET_N : CLEAR_N;
-  if(check_value_zero(res, bw)){
-    SET_Z; CLEAR_C;
+
+  if(!(srptr->COND)){
+    check_value_negative(res, bw) ? SET_N : CLEAR_N;
+    if(check_value_zero(res, bw)){
+      SET_Z; CLEAR_C;
+    }
+    else{
+      CLEAR_Z; SET_C;
+    }
+    CLEAR_V;
   }
-  else{
-    CLEAR_Z; SET_C;
-  }
-  CLEAR_V;
 
   if(trace){
     ta_dbg_printer("BIT", sreg, ad, bw, as, dreg, src, dst, res);
@@ -195,14 +198,17 @@ uint16_t and_fn(unsigned short sreg, unsigned short ad, unsigned short bw,
   uint16_t src, dst, res;
   retrieve_operands(&src, &dst, bw, sreg, ad, as, dreg, TRUE, FALSE);
   res = AND(src, dst);
-  check_value_negative(res, bw) ? SET_N : CLEAR_N;
-  if(check_value_zero(res, bw)){
-    SET_Z; CLEAR_C;
+
+  if(!(srptr->COND)){
+    check_value_negative(res, bw) ? SET_N : CLEAR_N;
+    if(check_value_zero(res, bw)){
+      SET_Z; CLEAR_C;
+    }
+    else{
+      CLEAR_Z; SET_C;
+    }
+    CLEAR_V;
   }
-  else{
-    CLEAR_Z; SET_C;
-  }
-  CLEAR_V;
 
   if(trace){
     ta_dbg_printer("AND", sreg, ad, bw, as, dreg, src, dst, res);
