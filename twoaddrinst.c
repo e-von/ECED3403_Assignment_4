@@ -6,7 +6,8 @@
 
   Coder: Elias Vonapartis
   Release Date: July 14, 2016
-  Latest Updates: None
+  Latest Updates: July 25, 2016 - Added safeguards to avoid SR alteration in
+                                  conditional execution.
 */
 
 #include <stdio.h>

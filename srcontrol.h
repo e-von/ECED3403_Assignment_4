@@ -4,7 +4,7 @@
 
   Coder: Elias Vonapartis
   Release Date: July 14, 2016
-  Latest Updates: None
+  Latest Updates: July 25, 2016 - Added two bits to the SR, COND and EX
 */
 
 #ifndef SRCONTROL_H

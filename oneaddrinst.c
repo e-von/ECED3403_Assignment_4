@@ -4,7 +4,8 @@
 
   Coder: Elias Vonapartis
   Release Date: July 14, 2016
-  Latest Updates: None
+  Latest Updates: July 25, 2016 - Added safeguards in some instructions to avoid
+                                  SR alteration in conditional execution.
 */
 
 #include <stdio.h>
@@ -100,7 +101,7 @@ void sxt(unsigned short bw, unsigned short as, unsigned short reg){
   update_sr(operand, 0, bw, ZNV);       //Update Zero, Negative, Overflow
 
   if(!(srptr->COND)){
-    srptr->Z ? CLEAR_C : SET_C;           //Special Carry Case
+    srptr->Z ? CLEAR_C : SET_C;         //Special Carry Case
   }
 
   if(trace){

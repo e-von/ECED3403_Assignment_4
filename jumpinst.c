@@ -4,7 +4,8 @@
 
   Coder: Elias Vonapartis
   Release Date: July 14, 2016
-  Latest Updates: None
+  Latest Updates: July 25, 2016 - Modified Jumps to Reset conditions when their
+                                - criteria are met
 */
 
 #include <stdio.h>
@@ -12,7 +13,7 @@
 #include "jumpinst.h"
 #include "srcontrol.h"
 #include "debugger.h"     //Included for trace flag
-#include "condinst.h"    //Included for counter reset
+#include "condinst.h"     //Included for counter reset
 
 enum srbits {C, Z, N, V};
 

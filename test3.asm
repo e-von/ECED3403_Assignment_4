@@ -1,4 +1,4 @@
-; Test #3 Cancellation of conditional through call
+; Test #3 Cancellation of Conditional IFAL Through Call
 
 org 0x1000
   alpha byte  0x32          ;1000
@@ -13,7 +13,7 @@ org 0x2000
     call  #subroutine
     sxt   &beta
 ;Else
-    add   #1, &alpha
+    add.b #1, &alpha
 
 org 0x2100
   subroutine

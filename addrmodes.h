@@ -4,7 +4,7 @@
 
   Coder: Elias Vonapartis
   Release Date: July 14, 2016
-  Latest Updates: None
+  Latest Updates: July 25, 2016 - pc_calculator declaration
 */
 
 #ifndef ADDRMODES_H

@@ -8,7 +8,8 @@
   Coder: Elias Vonapartis
          Based on code provided in the ECED3403 class of Dalhousie University.
   Release Date: July 14, 2016
-  Latest Updates: None
+  Latest Updates: July 25, 2016 - Added a PC calculator for conditional
+                                  instruction support.
 */
 
 #include <stdio.h>
@@ -208,7 +209,7 @@ void put_operand(unsigned asd, unsigned regnum, unsigned short operand,
   }
 }
 /*
-  This function increments the PC for instructions which are skipped with
+  This function increments the PC for instructions which are skipped in
   conditional execution.
 */
 void pc_calculator(unsigned as, unsigned ad, unsigned sreg, unsigned dreg,

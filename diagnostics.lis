@@ -1,7 +1,7 @@
 
 --------------    Input Records    --------------
 
-------Record 1------: ; Test #3 Cancellation of conditional through call
+------Record 1------: ; Test #3 Cancellation of Conditional IFAL Through Call
 
 ------Record 2------: 
 
@@ -31,7 +31,7 @@
 
 ------Record 15------: ;Else
 
-------Record 16------:     add   #1, &alpha
+------Record 16------:     add.b #1, &alpha
 
 ------Record 17------: 
 
@@ -105,7 +105,7 @@ Source Value: 2100
 Instruction Opcode: 1192
 Source Value: 1001
 ----------RECORD: 16----------
-Instruction Opcode: 5392
+Instruction Opcode: 53d2
 Source Value: 0000
 Destination Value: 1000
 
